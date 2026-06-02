@@ -100,7 +100,7 @@ export default function MyProfile() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="w-full flex justify-center items-center h-[400px] md:h-full min-h-[400px] bg-[#111111]/50 border border-white/5 rounded-3xl overflow-hidden relative cursor-crosshair"
+            className="w-full flex justify-center items-center h-[320px] min-h-[320px] md:h-full md:min-h-[400px] bg-[#111111]/50 border border-white/5 rounded-3xl overflow-hidden relative cursor-crosshair"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent z-0"></div>
             <Cubes

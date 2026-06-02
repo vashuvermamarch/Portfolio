@@ -265,7 +265,7 @@ const Cubes = ({
 
   return (
     <div className="relative w-full h-full p-4 flex items-center justify-center" style={wrapperStyle}>
-      <div ref={sceneRef} className="grid w-full h-full aspect-square max-w-[400px] max-h-[400px]" style={sceneStyle}>
+      <div ref={sceneRef} className="grid w-full aspect-square max-w-[260px] max-h-[260px] md:max-w-[400px] md:max-h-[400px]" style={sceneStyle}>
         {cells.map((_, r) =>
           cells.map((__, c) => (
             <div
