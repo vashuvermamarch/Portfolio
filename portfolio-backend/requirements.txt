@@ -1,2 +1,7 @@
 python-dotenv>=1.0.0
 Django>=6.0.5
+djangorestframework
+django-cors-headers
+groq
+gunicorn
+whitenoise

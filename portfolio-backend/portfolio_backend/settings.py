@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,12 +24,24 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#@9b&jk@$8+f0((te^@^ta9u5w*$3(uzw4d&vl5v(i%kto304b'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-#@9b&jk@$8+f0((te^@^ta9u5w*$3(uzw4d&vl5v(i%kto304b')
+
+IS_PRODUCTION = os.getenv('IS_PRODUCTION', 'False') == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+GCP_HOST = os.getenv('GCP_HOST')
+if GCP_HOST:
+    ALLOWED_HOSTS.append(GCP_HOST)
+
+if not IS_PRODUCTION:
+    # Allow localhost and any host for local development flexibility
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '*'])
+
+# Trust the Cloud Run URL for CSRF
+CSRF_TRUSTED_ORIGINS = [f'https://{GCP_HOST}'] if GCP_HOST else []
 
 
 # Application definition
@@ -49,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,17 +72,28 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+if not IS_PRODUCTION:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
+    # Allow any Cloud Run frontend URL
+    CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL', 'False') == 'True'
+else:
+    # In production, frontend and backend are same-origin, so CORS is not needed.
+    CORS_ALLOWED_ORIGINS = []
+
+if IS_PRODUCTION:
+    FRONTEND_DIR = BASE_DIR / 'portfolio-frontend' / 'dist'
+else:
+    FRONTEND_DIR = BASE_DIR.parent / 'portfolio-frontend' / 'dist'
 
 ROOT_URLCONF = 'portfolio_backend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [FRONTEND_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,13 +111,20 @@ WSGI_APPLICATION = 'portfolio_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if IS_PRODUCTION:
+    # In production, use the DATABASE_URL environment variable.
+    # It will be injected by the Cloud SQL connection.
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=False)
     }
-}
-
+else:
+    # Keep SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -129,6 +161,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
+
+STATICFILES_DIRS = [FRONTEND_DIR]
+WHITENOISE_ROOT = FRONTEND_DIR
+
+# Security settings for production
+if IS_PRODUCTION:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    # SECURE_HSTS_SECONDS = 31536000
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

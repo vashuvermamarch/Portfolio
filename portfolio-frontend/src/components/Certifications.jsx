@@ -5,16 +5,37 @@ import { FileText, ExternalLink } from 'lucide-react';
 export default function Certifications() {
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/portfolio/certificates/')
-      .then((res) => res.json())
+    const apiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+    fetch(`${apiUrl}/api/portfolio/certificates/`, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`HTTP ${res.status} - ${text.substring(0, 150)}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        setCertificates(data);
+        // Safely extract array data (handles DRF pagination or unexpected objects)
+        if (Array.isArray(data)) {
+          setCertificates(data);
+        } else if (data && Array.isArray(data.results)) {
+          setCertificates(data.results);
+        } else {
+          throw new Error("Unexpected API response format");
+        }
         setLoading(false);
       })
       .catch((err) => {
         console.error('Failed to fetch certificates:', err);
+        setError(err.message);
+        setCertificates([]);
         setLoading(false);
       });
   }, []);
@@ -31,10 +52,6 @@ export default function Certifications() {
     );
   }
 
-  if (certificates.length === 0) {
-    return null;
-  }
-
   return (
     <div className="w-full mt-32 mb-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 relative z-10">
@@ -48,7 +65,16 @@ export default function Certifications() {
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-white">Certifications</span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        {error ? (
+          <div className="w-full p-12 border border-red-500/30 bg-red-500/5 rounded-3xl text-center">
+            <p className="text-red-400 font-mono text-lg">Backend Error: {error}</p>
+          </div>
+        ) : !Array.isArray(certificates) || certificates.length === 0 ? (
+          <div className="w-full p-12 border border-white/10 bg-white/5 rounded-3xl text-center">
+            <p className="text-gray-400 font-mono text-lg">No certifications found.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
           {certificates.map((cert, index) => (
             <motion.div
               key={cert.id}
@@ -91,6 +117,7 @@ export default function Certifications() {
             </motion.div>
           ))}
         </div>
+        )}
       </div>
     </div>
   );
