@@ -1,0 +1,42 @@
+# =========================
+# Django Backend .gitignore
+# =========================
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables (contains secrets!)
+.env
+
+# Database
+*.sqlite3
+
+# Media uploads
+media/
+
+# Static files (collected)
+staticfiles/
+static_collected/
+
+# Django
+*.log
+local_settings.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

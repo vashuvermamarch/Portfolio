@@ -1,0 +1,48 @@
+# =========================
+# Root .gitignore
+# =========================
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Django
+*.sqlite3
+portfolio-backend/media/
+portfolio-backend/staticfiles/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+desktop.ini

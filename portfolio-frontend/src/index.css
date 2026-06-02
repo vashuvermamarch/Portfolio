@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Syne", sans-serif;
+
+  --color-bg: #030303;
+  --color-text: #f9fafb;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-border: rgba(255, 255, 255, 0.08);
+
+  --color-cyan-50: oklch(98.4% 0.019 200.873);
+  --color-cyan-100: oklch(95.6% 0.045 203.388);
+  --color-cyan-200: oklch(91.7% 0.08 205.041);
+  --color-cyan-300: oklch(86.5% 0.127 207.078);
+  --color-emerald-400: oklch(76.5% 0.177 163.223);
+  --color-yellow-400: oklch(85.2% 0.199 91.936);
+  --color-yellow-500: oklch(79.5% 0.184 86.047);
+
+  --animate-spin: spin 1s linear infinite;
+  --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  --animate-star-movement-bottom: star-movement-bottom linear infinite alternate;
+  --animate-star-movement-top: star-movement-top linear infinite alternate;
+  --animate-shine: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  0% { background-position: 100%; }
+  100% { background-position: -100%; }
+}
+
+@keyframes star-movement-bottom {
+  0% { transform: translate(0%, 0%); opacity: 1; }
+  100% { transform: translate(-100%, 0%); opacity: 0; }
+}
+
+@keyframes star-movement-top {
+  0% { transform: translate(0%, 0%); opacity: 1; }
+  100% { transform: translate(100%, 0%); opacity: 0; }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-bg) var(--color-bg);
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    cursor: url('https://sweezy-cursors.com/wp-content/uploads/cursor/auto-draft/black-pixel-cursor-32x32.png'), auto !important;
+  }
+
+  /* Base default pixel cursor */
+  *, ::selection {
+    cursor: url('https://sweezy-cursors.com/wp-content/uploads/cursor/auto-draft/black-pixel-cursor-32x32.png'), auto !important;
+  }
+
+  /* Pixel pointer cursor for clickable/interactive elements and autofill inputs */
+  a, button, [role="button"], .cursor-pointer, .cursor-grab, input, textarea, select, option, label, 
+  a *, button *, [role="button"] *, label *,
+  a:hover, button:hover, [role="button"]:hover, .cursor-pointer:hover, input:focus, textarea:focus, select:focus,
+  input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+    cursor: url('https://sweezy-cursors.com/wp-content/uploads/cursor/auto-draft/black-pixel-pointer-32x32.png'), pointer !important;
+  }
+
+  ::selection {
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-bg);
+    border: 2px solid var(--color-bg);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-bg);
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--color-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+  }
+
+  .text-gradient {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background: linear-gradient(to bottom right, #fff 30%, #9ca3af);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+    color: transparent;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
