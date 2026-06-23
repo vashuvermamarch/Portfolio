@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import PixelTransition from './PixelTransition';
 import ShinyText from './ShinyText';
 import TextType from './TextType';
+import TrueFocus from './TrueFocus';
 
 export default function Hero() {
   const { scrollY } = useScroll();
@@ -88,10 +89,23 @@ export default function Hero() {
               />
             }
             secondContent={
-              <div className="w-full h-full flex items-center justify-center bg-[#0a0a0a]">
-                <h2 className="text-3xl md:text-5xl font-display font-bold uppercase tracking-widest text-white text-center">
-                  VASHU<br/>VERMA
-                </h2>
+              <div className="w-full h-full flex items-center justify-center bg-[#0a0a0a] p-4 select-none">
+                <TrueFocus 
+                  sentence="VASHU VERMA"
+                  manualMode={false}
+                  blurAmount={4}
+                  borderColor="#ffffff"
+                  glowColor="rgba(255, 255, 255, 0.4)"
+                  animationDuration={0.5}
+                  pauseBetweenAnimations={1.2}
+                  style={{
+                    '--focus-direction': 'column',
+                    '--focus-font-size': 'clamp(2rem, 8vw, 3.5rem)',
+                    '--focus-font-weight': '900',
+                    '--focus-gap': '1rem',
+                    'fontFamily': 'Outfit, Inter, sans-serif'
+                  }}
+                />
               </div>
             }
             gridSize={12}

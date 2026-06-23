@@ -5,3 +5,5 @@ django-cors-headers
 groq
 gunicorn
 whitenoise
+dj-database-url
+

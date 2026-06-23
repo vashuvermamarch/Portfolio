@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import TextPressure from './TextPressure';
 import PillNav from './PillNav';
+import TrueFocus from './TrueFocus';
 
 const navItems = [
   { href: "#about", label: "About" },
@@ -18,21 +19,25 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-[1400px] flex flex-row items-center justify-between relative"
       >
-        {/* Left Side: VASHU VERMA with TextPressure */}
+        {/* Left Side: VASHU VERMA with TrueFocus */}
         <a 
           href="#" 
-          className="relative h-12 md:h-14 w-56 md:w-72 flex items-center justify-center pointer-events-auto bg-[#111111]/60 backdrop-blur-md border border-white/10 rounded-full px-4 md:px-6 py-1 shadow-2xl transition-all hover:bg-[#111111]/80 order-2 md:order-1 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
+          className="relative h-12 md:h-14 w-fit px-6 md:px-8 flex items-center justify-center pointer-events-auto bg-[#111111]/60 backdrop-blur-md border border-white/10 rounded-full py-1 shadow-2xl transition-all hover:bg-[#111111]/80 order-2 md:order-1 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
         >
-          <TextPressure 
-            text="VASHU VERMA" 
-            flex={true} 
-            alpha={false} 
-            stroke={false} 
-            width={true} 
-            weight={true} 
-            italic={true} 
-            textColor="#ffffff" 
-            minFontSize={20}
+          <TrueFocus 
+            sentence="VASHU VERMA"
+            manualMode={false}
+            blurAmount={3}
+            borderColor="#ffffff"
+            glowColor="rgba(255, 255, 255, 0.4)"
+            animationDuration={0.4}
+            pauseBetweenAnimations={1.5}
+            style={{
+              '--focus-font-size': '0.9rem',
+              '--focus-font-weight': '700',
+              '--focus-gap': '0.4rem',
+              'fontFamily': 'Outfit, Inter, sans-serif'
+            }}
           />
         </a>
 

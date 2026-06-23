@@ -73,12 +73,7 @@ MIDDLEWARE = [
 ]
 
 if not IS_PRODUCTION:
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ]
-    # Allow any Cloud Run frontend URL
-    CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL', 'False') == 'True'
+    CORS_ALLOW_ALL_ORIGINS = True
 else:
     # In production, frontend and backend are same-origin, so CORS is not needed.
     CORS_ALLOWED_ORIGINS = []

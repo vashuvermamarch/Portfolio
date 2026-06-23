@@ -14,7 +14,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --platform managed \
   --region "$REGION" \
   --allow-unauthenticated \
-  --set-env-vars="IS_PRODUCTION=True,DJANGO_SECRET_KEY=django-insecure-production-key-change-me,GROQ_API_KEY=YOUR_GROQ_API_KEY_HERE,EMAIL_HOST=smtp.gmail.com,EMAIL_PORT=587,EMAIL_USE_TLS=True,EMAIL_HOST_USER=karanverma24march@gmail.com,EMAIL_HOST_PASSWORD=YOUR_EMAIL_APP_PASSWORD,DEFAULT_FROM_EMAIL=karanverma24march@gmail.com,DATABASE_URL=sqlite:////app/db.sqlite3"
+  --set-env-vars="IS_PRODUCTION=True,DJANGO_SECRET_KEY=django-insecure-production-key-change-me,GROQ_API_KEY=YOUR_GROQ_API_KEY,EMAIL_HOST=smtp.gmail.com,EMAIL_PORT=587,EMAIL_USE_TLS=True,EMAIL_HOST_USER=karanverma24march@gmail.com,EMAIL_HOST_PASSWORD=YOUR_EMAIL_HOST_PASSWORD,DEFAULT_FROM_EMAIL=karanverma24march@gmail.com,DATABASE_URL=sqlite:////app/db.sqlite3"
 
 if [ $? -ne 0 ]; then
     echo ""
