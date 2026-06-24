@@ -1,0 +1,15 @@
+# Ignore local environment files and dev directories in Docker builds
+portfolio-frontend/.env
+portfolio-frontend/.env.local
+portfolio-frontend/.env.development
+portfolio-frontend/node_modules
+portfolio-frontend/dist
+
+portfolio-backend/.env
+portfolio-backend/venv
+portfolio-backend/__pycache__
+portfolio-backend/db.sqlite3
+
+.git
+.github
+*.log

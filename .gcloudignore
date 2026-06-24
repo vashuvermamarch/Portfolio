@@ -11,3 +11,11 @@ portfolio-backend/__pycache__/
 *.pyc
 !portfolio-backend/db.sqlite3
 !portfolio-backend/media/
+
+# Environment configs
+.env
+.env.*
+**/.env
+**/.env.*
+**/node_modules
+**/dist
